@@ -25,7 +25,7 @@ def create_app(config):
     api.add_namespace(auth_ns)
 
 
-
+    
 
     @app.shell_context_processor
     def make_shell_context():

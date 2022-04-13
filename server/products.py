@@ -21,15 +21,22 @@ product_model=product_ns.model(
 
 
 
+@product_ns.route('/hello')
+class Hello(Resource):
+    def get(self):
+        return {"message":"Hello"}       
+
 
 @product_ns.route('/products')
 class ProductsResource(Resource):
     @product_ns.marshal_list_with(product_model)
     def get(self):
         """Get all products"""
-        products= Products.query_all()
+        products= Products.query.all()
 
         return products
+
+
 
     @product_ns.marshal_list_with(product_model)   
     @product_ns.expect(product_model)
