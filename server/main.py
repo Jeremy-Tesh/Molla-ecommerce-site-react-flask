@@ -8,7 +8,7 @@ from config import DevConfig
 from model import Products,User
 from exts import db
 from werkzeug.security import generate_password_hash,check_password_hash   
-from flask_jwt_extended import JWTManager,create_access_token,create_refresh_token
+from flask_jwt_extended import JWTManager,create_access_token,create_refresh_token,jwt_required
 
 
 
@@ -122,6 +122,7 @@ class ProductsResource(Resource):
 
     @api.marshal_list_with(product_model)   
     @api.expect(product_model)
+    @jwt_required()
     def post(self):
         """new products"""
         data=request.get_json()
@@ -149,6 +150,8 @@ class ProductsResoure(Resource):
         return product
 
     @api.marshal_list_with(product_model)
+
+    @jwt_required()
     def put(self,id):
         """update a product by id"""
         product_to_update=Products.query.get_or_404(id)
@@ -157,7 +160,8 @@ class ProductsResoure(Resource):
         return product_to_update
 
         
-    @api.marshal_list_with(product_model)   
+    @api.marshal_list_with(product_model)
+    @jwt_required()   
     def delete(self,id):
         """Delete product"""
         product_to_delete=Products.query.get_or_404(id)
