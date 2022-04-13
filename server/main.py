@@ -1,5 +1,6 @@
 
 from flask_migrate import Migrate
+from flask_cors import CORS
 from products import product_ns
 from auth import auth_ns
 from flask import Flask
@@ -13,6 +14,7 @@ from flask_jwt_extended import JWTManager
 def create_app(config):
     app=Flask(__name__)
     app.config.from_object(config)
+    CORS(app)
 
     db.init_app(app)
 

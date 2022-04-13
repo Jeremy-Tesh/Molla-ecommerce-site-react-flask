@@ -10,13 +10,14 @@ import CheckOut from './components/CheckOut/Checkout';
 import './App.css';
 import Login from './Pages/LoginPage/login';
 import SignUp from './Pages/SignUp/signup';
+import Text from './text';
 
 function App() {
     let history = useLocation();
     console.log(history.pathname);
     return (
         <div className={history.pathname === '/' ? 'app-container' : 'app'}>
-            <Header />
+            {/* <Header />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/shoppage" element={<ShopPage />} />
@@ -25,7 +26,8 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
             </Routes>
-            <Footer />
+            <Footer /> */}
+            <Text />
         </div>
     );
 }
