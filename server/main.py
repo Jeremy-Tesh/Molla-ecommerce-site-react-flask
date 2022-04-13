@@ -1,6 +1,6 @@
 
 from itertools import product
-from pydoc import describe
+from flask_migrate import Migrate
 
 from flask import Flask,request
 from flask_restx import Api,Resource,fields
@@ -15,6 +15,9 @@ app=Flask(__name__)
 app.config.from_object(DevConfig)
 
 db.init_app(app)
+
+migrate= Migrate(app,db)
+
 api=Api(app,doc='/docs')
 
 
