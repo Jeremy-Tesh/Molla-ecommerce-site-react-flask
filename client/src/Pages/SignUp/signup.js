@@ -17,7 +17,7 @@ function SignUp() {
         firstName: yup.string().required(),
         lastName: yup.string().required(),
         email: yup.string().email().required(),
-        password1: yup.string().min(4).max(15).required(),
+        password1: yup.string().min(6).max(15).required(),
         password2: yup.string().oneOf([yup.ref('password1')], null)
     });
 

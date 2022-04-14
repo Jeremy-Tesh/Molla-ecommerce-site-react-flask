@@ -1,37 +1,50 @@
-import React, { useEffect, useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { TextField } from '@mui/material';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import Logo from '../../Assets/Icons/logo-footer.png';
 import Button from '../../components/Button/button';
-import TextBox from '../../components/TextField/textField';
+import { login } from '../../auth';
+import { useNavigate } from 'react-router-dom';
+
+import * as yup from 'yup';
 
 function Login() {
-    const initialValues = {
-        email: '',
-        password: ''
-    };
+    const navigate = useNavigate();
 
-    const [data, setData] = useState({});
+    const schema = yup.object().shape({
+        username: yup.string().min(6).max(15).required(),
+        password: yup.string().min(6).max(15).required()
+    });
 
-    useEffect(() => {
-        fetch('/api')
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-            })
-            .then((data) => setData(data));
-    }, []);
-    console.log(data);
+    const {
+        register,
+        reset,
+        handleSubmit,
+        formState: { errors }
+    } = useForm({
+        resolver: yupResolver(schema)
+    });
 
-    const [values, setValues] = useState(initialValues);
+    const onSubmit = (data) => {
+        console.log(data);
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+        fetch('auth/login', requestOptions)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data['access token']);
+                login(data['access token']);
+                navigate('/');
+            });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(values);
-    };
-    const handleChange = (e) => {
-        var { name, value } = e.target;
-        setValues({ ...values, [name]: value });
+        reset();
     };
 
     return (
@@ -40,27 +53,30 @@ function Login() {
                 <img className="text-black my-8" src={Logo} alt="" />
                 {/* <p className="text-center text-3xl my-5">Hello Again</p> */}
                 <div>
-                    <form className="flex flex-col" onSubmit={handleSubmit}>
-                        <TextBox
-                            label="Email"
-                            type=""
-                            name="email"
-                            value={values.email}
-                            onChange={handleChange}
+                    <form
+                        className="flex flex-col"
+                        onSubmit={handleSubmit(onSubmit)}
+                    >
+                        <TextField
+                            label="Username"
+                            type="text"
+                            margin="normal"
+                            {...register('username')}
                         />
-                        <TextBox
+                        <small className="text-red-500">
+                            {errors.username?.message}
+                        </small>
+                        <TextField
                             label="password"
                             type="password"
-                            name="password"
-                            value={values.password}
-                            onChange={handleChange}
+                            margin="normal"
+                            {...register('password')}
                         />
+                        <small className="text-red-500">
+                            {errors.password?.message}
+                        </small>
 
-                        <Button
-                            value="Login"
-                            type="submit"
-                            onClick={handleSubmit}
-                        />
+                        <Button value="Login" type="submit" />
                         <div>
                             <p>
                                 Dont't have an account yet ?{' '}
