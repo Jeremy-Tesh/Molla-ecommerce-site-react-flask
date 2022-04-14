@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../components/Button/button';
+import { Alert } from 'react-bootstrap';
 
 import logo from '../../Assets/Icons/logo-footer.png';
 import { useForm } from 'react-hook-form';
@@ -9,6 +10,9 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 function SignUp() {
+    const [show, setShow] = useState(false);
+    const [serverResponse, setServerResponse] = useState('');
+
     const schema = yup.object().shape({
         firstName: yup.string().required(),
         lastName: yup.string().required(),
@@ -44,7 +48,12 @@ function SignUp() {
 
         fetch('/auth/signup', requestOptions)
             .then((res) => res.json())
-            .then((data) => console.log(data))
+            .then((data) => {
+                console.log(data);
+                setServerResponse(data.message);
+                console.log(serverResponse);
+                setShow(true);
+            })
             .catch((err) => console.log(err));
     };
 
@@ -53,6 +62,17 @@ function SignUp() {
             <div className="w-[400px]  ">
                 <img className="text-black my-8" src={logo} alt="" />
                 {/* <p className="text-center text-3xl my-5">Hello Again</p> */}
+                {show ? (
+                    <Alert
+                        variant="success"
+                        onClose={() => setShow(false)}
+                        dismissible
+                    >
+                        <p>{serverResponse}</p>
+                    </Alert>
+                ) : (
+                    <p></p>
+                )}
                 <div>
                     <form
                         className="flex flex-col"
