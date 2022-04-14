@@ -12,8 +12,6 @@ function Header() {
         let location = useLocation();
 
         useEffect(() => {
-            console.log(location);
-
             if (location.pathname === '/') {
                 window.addEventListener('scroll', changeColor);
                 changeColor();

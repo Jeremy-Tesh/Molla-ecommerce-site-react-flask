@@ -17,7 +17,7 @@ function App() {
     console.log(history.pathname);
     return (
         <div className={history.pathname === '/' ? 'app-container' : 'app'}>
-            {/* <Header />
+            <Header />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/shoppage" element={<ShopPage />} />
@@ -26,7 +26,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
             </Routes>
-            <Footer /> */}
+            <Footer />
             <Text />
         </div>
     );

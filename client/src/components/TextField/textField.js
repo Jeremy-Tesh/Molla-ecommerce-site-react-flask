@@ -1,7 +1,7 @@
 import TextField from '@mui/material/TextField';
 import React from 'react';
 
-function TextBox(props) {
+const TextBox = (props) => {
     return (
         <div className="mb-5">
             <TextField
@@ -13,10 +13,10 @@ function TextBox(props) {
                 type={props.type}
                 fullWidth
                 value={props.value}
-                onChange={props.onChange}
+                ref={props.ref}
             />
         </div>
     );
-}
+};
 
 export default TextBox;
